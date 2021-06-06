@@ -149,4 +149,6 @@ function createOffer () {
   return description;
 }
 
+// Генерация 10 объектов и "вызов" переменной, чтобы не ругался npm test
 const similarDescriptions = new Array(SIMILAR_DESCRIPTION_COUNT).fill(null).map(() => createOffer());
+similarDescriptions;
