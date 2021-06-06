@@ -81,8 +81,7 @@ function getRandomFloat (start, finish, decimalPlaces) {
   return (number < start) ? 'Число ниже указанного диапазона' : Number(String(number).substr(0, decimalPlaces + (lengthNumber - decimalPlaces + 1)));
 }
 
-function getAuthor () {
-  const number = getRandomInteger(1, 10);
+function getAuthor (number) {
   const result = (number < 10) ? `0${number}` : number;
   const randomAvatar = `img/avatars/user${result}.png`;
 
@@ -141,10 +140,10 @@ function getLocation () {
   };
 }
 
-function createOffer () {
+function createOffer (number) {
   const description = {};
 
-  description.author = getAuthor();
+  description.author = getAuthor(number);
   description.location = getLocation();
   description.offer = getOffer(description.location);
 
@@ -152,5 +151,5 @@ function createOffer () {
 }
 
 // Генерация 10 объектов и "вызов" переменной, чтобы не ругался npm test
-const similarDescriptions = new Array(SIMILAR_DESCRIPTION_COUNT).fill(null).map(() => createOffer());
+const similarDescriptions = new Array(SIMILAR_DESCRIPTION_COUNT).fill(null).map((value, index) => value = createOffer(index + 1));
 similarDescriptions;
