@@ -83,7 +83,8 @@ function getRandomFloat (start, finish, decimalPlaces) {
 
 function getAuthor () {
   const number = getRandomInteger(1, 10);
-  const randomAvatar = `img/avatars/user${(number < 10) ? '0' + number : number}.png`;
+  const result = (number < 10) ? `0${number}` : number;
+  const randomAvatar = `img/avatars/user${result}.png`;
 
   return {
     avatar: randomAvatar,
