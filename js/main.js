@@ -1,5 +1,9 @@
 import './generation-similar.js';
-import {disablePage, enablePage} from './form.js';
+import {checkMapInitialization, enablePage} from './form.js';
 
-disablePage();
+// Функция enablePage() будет "перенесена" в checkMapInitialization
+// checkMapInitialization будет проверять инициализацию карты:
+//   - если инициализирована, то страница разблокирована,
+//   - если нет - заблокирована.
 enablePage();
+checkMapInitialization();
