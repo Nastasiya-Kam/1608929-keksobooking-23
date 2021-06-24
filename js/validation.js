@@ -39,14 +39,15 @@ const typeSelect = document.querySelector('select[name=type]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
+  let customMessage = '';
 
   if (valueLength > MAX_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Превышено количество допустимых знаков на ${valueLength - MAX_TITLE_LENGTH}`);
+    customMessage = `Превышено количество допустимых знаков на ${valueLength - MAX_TITLE_LENGTH}`;
   } else if (valueLength < MIN_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Минимальное количество знаков ${MIN_TITLE_LENGTH}. Осталось ${MIN_TITLE_LENGTH - valueLength}`);
-  } else {
-    titleInput.setCustomValidity('');
+    customMessage = `Минимальное количество знаков ${MIN_TITLE_LENGTH}. Осталось ${MIN_TITLE_LENGTH - valueLength}`;
   }
+
+  titleInput.setCustomValidity(customMessage);
 
   titleInput.reportValidity();
 });
@@ -54,18 +55,15 @@ titleInput.addEventListener('input', () => {
 priceInput.addEventListener('input', () => {
   const value = priceInput.value;
   const minValue = priceInput.min;
+  let customMessage = '';
 
   if (value > MAX_PRICE) {
-    priceInput.setCustomValidity(`Максимальная цена за ночь ${MAX_PRICE}`);
-  } else {
-    priceInput.setCustomValidity('');
+    customMessage = `Максимальная цена за ночь ${MAX_PRICE}`;
+  } else if (value < minValue && value !== '') {
+    customMessage = `Минимальная цена за ночь ${minValue}`;
   }
 
-  if (value < minValue && value !== '') {
-    priceInput.setCustomValidity(`Минимальная цена за ночь ${minValue}`);
-  } else {
-    priceInput.setCustomValidity('');
-  }
+  priceInput.setCustomValidity(customMessage);
 
   if (value !== '') {
     priceInput.reportValidity();
@@ -123,13 +121,12 @@ function setDisabledOption (options, rooms) {
   rooms = Number(rooms);
 
   for (let index = 0; index < options.length; index++) {
-
     const option = options[index];
 
     if (rooms === NOT_CAPACITY) {
-      (Number(option.value) !== 0) ? option.disabled = true : option.disabled = false;
+      option.disabled = (Number(option.value) !== 0);
     } else {
-      (rooms < Number(option.value) || Number(option.value) === 0) ? option.disabled = true : option.disabled = false;
+      option.disabled = (rooms < Number(option.value) || Number(option.value) === 0);
     }
   }
 }
