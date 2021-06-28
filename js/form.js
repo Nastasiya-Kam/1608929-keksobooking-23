@@ -8,7 +8,7 @@
 
 import './validation.js';
 
-function setDisabled (className, isDisabled) {
+const setDisabled = (className, isDisabled) => {
   const element = document.querySelector(`.${className}`);
 
   (isDisabled) ? element.classList.add(`${className}--disabled`) : element.classList.remove(`${className}--disabled`);
@@ -16,24 +16,24 @@ function setDisabled (className, isDisabled) {
   for (let index = 0; index < element.length; index++) {
     (isDisabled) ? element[index].disabled = true : element[index].disabled = false;
   }
-}
+};
 
-function disablePage () {
+const disablePage = () => {
   // TODO Реализация позднее. На месте карты отображается серый прямоугольник.
 
   setDisabled('ad-form', true);
   setDisabled('map__filters', true);
-}
+};
 
 disablePage();
 
-function enablePage () {
+const enablePage = () => {
   // TODO После загрузки данных с сервера просматривать похожие объявления на карте,
   // TODO фильтровать их и
   // TODO уточнять подробную информацию о них, показывая для каждого из объявлений карточку.
 
   setDisabled('ad-form', false);
   setDisabled('map__filters', false);
-}
+};
 
 export {enablePage};

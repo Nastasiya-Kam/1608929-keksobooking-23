@@ -1,8 +1,3 @@
-// 2.4. Страница реагирует на неправильно введённые значения в форму.
-
-// При попытке отправить форму с неправильными данными, отправки не происходит,
-// а неверно заполненные поля подсвечиваются красной рамкой.
-
 // function makeValidation () {}
 
 // 2.5. При успешной отправке формы или её очистке...
@@ -25,6 +20,8 @@ const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 const NOT_CAPACITY = 100;
 
+// ?Перечисление?
+// Б8. Название классов, конструкторов и перечислений начинается с заглавной буквы. В названии используются английские существительные. Значения перечислений объявлены как константы.
 const BUNGALOW_MIN_PRICE = 0;
 const FLAT_MIN_PRICE = 1000;
 const HOTEL_MIN_PRICE = 3000;
@@ -70,7 +67,7 @@ priceInput.addEventListener('input', () => {
   }
 });
 
-function setPrice (type) {
+const setPrice = (type) => {
   switch (type) {
     case 'bungalow':
       priceInput.min = BUNGALOW_MIN_PRICE;
@@ -88,7 +85,7 @@ function setPrice (type) {
       priceInput.min = PALACE_MIN_PRICE;
       return priceInput.placeholder = PALACE_MIN_PRICE;
   }
-}
+};
 
 typeSelect.addEventListener('input', () => {
   setPrice(typeSelect.value);
@@ -99,7 +96,7 @@ typeSelect.addEventListener('input', () => {
   }
 });
 
-function checkCapacity (rooms, capacity) {
+const checkCapacity = (rooms, capacity) => {
   const roomsNumber = Number(rooms.value);
   const capacityValue = Number(capacity.value);
   let customMessage = '';
@@ -115,9 +112,9 @@ function checkCapacity (rooms, capacity) {
   }
 
   return capacity.setCustomValidity(customMessage);
-}
+};
 
-function setDisabledOption (options, rooms) {
+const setDisabledOption = (options, rooms) => {
   rooms = Number(rooms);
 
   for (let index = 0; index < options.length; index++) {
@@ -129,7 +126,7 @@ function setDisabledOption (options, rooms) {
       option.disabled = (rooms < Number(option.value) || Number(option.value) === 0);
     }
   }
-}
+};
 
 roomsSelect.addEventListener('input', () => {
   checkCapacity(roomsSelect, capacitySelect);
