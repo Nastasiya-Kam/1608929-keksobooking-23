@@ -58,17 +58,23 @@ function getPhotos (list, arrayPhotos) {
   list.appendChild(popupPhotosFragment);
 }
 
+function checkParameter (template, parameter, text, className) {
+  const element = template.querySelector(className);
+
+  (parameter) ? element.textContent = text : hideElement(element);
+}
+
 function generateSimilarProperties ({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}}) {
   const cardElement = cardTemplate.cloneNode(true);
 
-  (title) ? cardElement.querySelector('.popup__title').textContent = title : hideElement(cardElement.querySelector('.popup__title'));
-  (address) ? cardElement.querySelector('.popup__text--address').textContent = address : hideElement(cardElement.querySelector('.popup__text--address'));
-  (price) ? cardElement.querySelector('.popup__text--price').textContent = `${price} ₽/ночь` : hideElement(cardElement.querySelector('.popup__text--price'));
-  (type) ? cardElement.querySelector('.popup__type').textContent = getType(type) : hideElement(cardElement.querySelector('.popup__type'));
-  (rooms && guests) ? cardElement.querySelector('.popup__text--capacity').textContent = `${rooms} комнаты для ${guests} гостей` : hideElement(cardElement.querySelector('.popup__text--capacity'));
-  (checkin && checkout) ? cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}` : hideElement(cardElement.querySelector('.popup__text--time'));
+  checkParameter(cardElement, title, title, '.popup__title');
+  checkParameter(cardElement, address, address, '.popup__text--address');
+  checkParameter(cardElement, price, `${price} ₽/ночь`, '.popup__text--price');
+  checkParameter(cardElement, type, getType(type), '.popup__type');
+  checkParameter(cardElement, rooms && guests, `${rooms} комнаты для ${guests} гостей`, '.popup__text--capacity');
+  checkParameter(cardElement, checkin && checkout, `Заезд после ${checkin}, выезд до ${checkout}`, '.popup__text--time');
   (features) ? getFeatures(features, cardElement) : hideElement(cardElement.querySelector('.popup__features'));
-  (description) ? cardElement.querySelector('.popup__description').textContent = description : hideElement(cardElement.querySelector('.popup__description'));
+  checkParameter(cardElement, description, description, '.popup__description');
   (photos) ? getPhotos(cardElement.querySelector('.popup__photos'), photos) : hideElement(cardElement.querySelector('.popup__photos'));
   (avatar) ? cardElement.querySelector('.popup__avatar').src = avatar : hideElement(cardElement.querySelector('.popup__avatar'));
 
