@@ -97,7 +97,7 @@ function isExistsElement(array, element) {
 }
 
 function getRandomArrayUniqueElements(array) {
-  const arrayLength = getRandomInteger(1, array.length);
+  const arrayLength = getRandomInteger(0, array.length);
   const resultArray = [];
   let element = getRandomArrayElement(array);
 

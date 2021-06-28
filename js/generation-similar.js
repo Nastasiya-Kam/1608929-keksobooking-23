@@ -2,9 +2,9 @@ import {getSimilarDescriptions} from './data.js';
 
 const SIMILAR_DESCRIPTION_COUNT = 10;
 const similarProperties = getSimilarDescriptions(SIMILAR_DESCRIPTION_COUNT);
-const similarListFragment = document.createDocumentFragment();
+// const similarListFragment = document.createDocumentFragment();
 
-const mapCanvas = document.querySelector('.map__canvas');
+// const mapCanvas = document.querySelector('.map__canvas');
 
 const cardTemplate =  document.querySelector('#card')
   .content
@@ -78,10 +78,13 @@ function generateSimilarProperties ({author: {avatar}, offer: {title, address, p
   (photos) ? getPhotos(cardElement.querySelector('.popup__photos'), photos) : hideElement(cardElement.querySelector('.popup__photos'));
   (avatar) ? cardElement.querySelector('.popup__avatar').src = avatar : hideElement(cardElement.querySelector('.popup__avatar'));
 
-  similarListFragment.appendChild(cardElement);
+  // similarListFragment.appendChild(cardElement);
 
-  return similarListFragment;
+  // return similarListFragment;
+  return cardElement;
 }
 
-generateSimilarProperties(similarProperties[1]);
-mapCanvas.appendChild(similarListFragment);
+// generateSimilarProperties(similarProperties[1]);
+// mapCanvas.appendChild(similarListFragment);
+
+export {generateSimilarProperties, similarProperties};
