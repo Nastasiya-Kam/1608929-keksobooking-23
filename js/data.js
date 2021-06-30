@@ -1,6 +1,6 @@
 const TITLE = 'Секундное предложение. Завтра уже не будет';
 
-const TYPE = [
+const TYPES = [
   'palace',
   'flat',
   'house',
@@ -8,13 +8,13 @@ const TYPE = [
   'hotel',
 ];
 
-const CHECKIN = [
+const CHECKINS = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const CHECKOUT = [
+const CHECKOUTS = [
   '12:00',
   '13:00',
   '14:00',
@@ -37,7 +37,7 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-function getRandomInteger (start, finish) {
+const getRandomInteger = (start, finish) => {
   if (start < 0 || finish < 0) {
     return 'Диапазон может быть только положительный. Переопределите границы диапазона';
   }
@@ -47,17 +47,17 @@ function getRandomInteger (start, finish) {
   }
 
   return Math.floor(Math.random() * (finish - start + 1) + start); //  Взято с MDN: https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-}
+};
 
-function getInteger (number, decimal) {
+const getInteger = (number, decimal) => {
   for (let index = 0; index < decimal; index++) {
     number *= 10;
   }
 
   return Math.floor(number);
-}
+};
 
-function getRandomFloat (start, finish, decimalPlaces) {
+const getRandomFloat = (start, finish, decimalPlaces) => {
   if (start < 0 || finish < 0) {
     return 'Диапазон может быть только положительный. Переопределите границы диапазона';
   }
@@ -77,27 +77,23 @@ function getRandomFloat (start, finish, decimalPlaces) {
   }
 
   return (number < start) ? 'Число ниже указанного диапазона' : Number(String(number).substr(0, decimalPlaces + (lengthNumber - decimalPlaces + 1)));
-}
+};
 
-function getAuthor (number) {
+const getAuthor = (number) => {
   const result = (number < 10) ? `0${number}` : number;
   const randomAvatar = `img/avatars/user${result}.png`;
 
   return {
     avatar: randomAvatar,
   };
-}
+};
 
-function getRandomArrayElement(elements) {
-  return elements[getRandomInteger(0, elements.length - 1)];
-}
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-function isExistsElement(array, element) {
-  return array.some((value) => element === value);
-}
+const isExistsElement = (array, element) => array.some((value) => element === value);
 
-function getRandomArrayUniqueElements(array) {
-  const arrayLength = getRandomInteger(1, array.length);
+const getRandomArrayUniqueElements = (array) => {
+  const arrayLength = getRandomInteger(0, array.length);
   const resultArray = [];
   let element = getRandomArrayElement(array);
 
@@ -110,25 +106,27 @@ function getRandomArrayUniqueElements(array) {
   }
 
   return resultArray;
-}
+};
 
-function getOffer ({lat, lng}) {
-  return {
+const getOffer = ({lat, lng}) => {
+  const offer = {
     title: TITLE,
     address: `${lat}, ${lng}`,
     price: getRandomInteger(0, 1000000),
-    type: getRandomArrayElement(TYPE),
+    type: getRandomArrayElement(TYPES),
     rooms: getRandomInteger(0, 100),
     guests: getRandomInteger(0, 3),
-    checkin: getRandomArrayElement(CHECKIN),
-    checkout: getRandomArrayElement(CHECKOUT),
+    checkin: getRandomArrayElement(CHECKINS),
+    checkout: getRandomArrayElement(CHECKOUTS),
     features: getRandomArrayUniqueElements(FEATURES),
     description: DESCRIPTION,
     photos: getRandomArrayUniqueElements(PHOTOS),
   };
-}
 
-function getLocation () {
+  return offer;
+};
+
+const getLocation = () => {
   const randomLatitude = getRandomFloat(35.65000, 35.70000, 5);
   const randomLongitude = getRandomFloat(139.70000, 139.80000, 5);
 
@@ -136,9 +134,9 @@ function getLocation () {
     lat: randomLatitude,
     lng: randomLongitude,
   };
-}
+};
 
-function createOffer (number) {
+const createOffer = (number) => {
   const description = {};
 
   description.author = getAuthor(number);
@@ -146,10 +144,8 @@ function createOffer (number) {
   description.offer = getOffer(description.location);
 
   return description;
-}
+};
 
-function getSimilarDescriptions (count) {
-  return new Array(count).fill(null).map((value, index) => value = createOffer(index + 1));
-}
+const getSimilarDescriptions = (count) => new Array(count).fill(null).map((value, index) => value = createOffer(index + 1));
 
 export {getSimilarDescriptions};

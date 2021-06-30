@@ -2,15 +2,15 @@ import {getSimilarDescriptions} from './data.js';
 
 const SIMILAR_DESCRIPTION_COUNT = 10;
 const similarProperties = getSimilarDescriptions(SIMILAR_DESCRIPTION_COUNT);
-const similarListFragment = document.createDocumentFragment();
+// const similarListFragment = document.createDocumentFragment();
 
-const mapCanvas = document.querySelector('.map__canvas');
+// const mapCanvas = document.querySelector('.map__canvas');
 
-const cardTemplate =  document.querySelector('#card')
+const cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
-function getType (type) {
+const getType = (type) => {
   switch (type) {
     case 'flat':
       return 'Квартира';
@@ -25,13 +25,11 @@ function getType (type) {
     default:
       return 'Непонятно!';
   }
-}
+};
 
-function hideElement (element) {
-  element.classList.add('hidden');
-}
+const hideElement = (element) => element.classList.add('hidden');
 
-function getFeatures (features, card) {
+const getFeatures = (features, card) => {
   const modifiers = features.map((feature) => `popup__feature--${feature}`);
   const list = card.querySelector('.popup__features');
 
@@ -42,9 +40,9 @@ function getFeatures (features, card) {
       item.remove();
     }
   });
-}
+};
 
-function getPhotos (list, arrayPhotos) {
+const getPhotos = (list, arrayPhotos) => {
   const popupPhoto = list.querySelector('.popup__photo');
   const popupPhotosFragment = document.createDocumentFragment();
 
@@ -56,15 +54,15 @@ function getPhotos (list, arrayPhotos) {
 
   popupPhoto.remove();
   list.appendChild(popupPhotosFragment);
-}
+};
 
-function checkParameter (template, parameter, text, className) {
+const checkParameter = (template, parameter, text, className) => {
   const element = template.querySelector(className);
 
   (parameter) ? element.textContent = text : hideElement(element);
-}
+};
 
-function generateSimilarProperties ({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}}) {
+const generateSimilarProperties = ({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}}) => {
   const cardElement = cardTemplate.cloneNode(true);
 
   checkParameter(cardElement, title, title, '.popup__title');
@@ -78,10 +76,7 @@ function generateSimilarProperties ({author: {avatar}, offer: {title, address, p
   (photos) ? getPhotos(cardElement.querySelector('.popup__photos'), photos) : hideElement(cardElement.querySelector('.popup__photos'));
   (avatar) ? cardElement.querySelector('.popup__avatar').src = avatar : hideElement(cardElement.querySelector('.popup__avatar'));
 
-  similarListFragment.appendChild(cardElement);
+  return cardElement;
+};
 
-  return similarListFragment;
-}
-
-generateSimilarProperties(similarProperties[1]);
-mapCanvas.appendChild(similarListFragment);
+export {generateSimilarProperties, similarProperties};
