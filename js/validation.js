@@ -33,6 +33,8 @@ const priceInput = document.querySelector('input[name=price]');
 const roomsSelect = document.querySelector('select[name=rooms]');
 const capacitySelect = document.querySelector('select[name=capacity]');
 const typeSelect = document.querySelector('select[name=type]');
+const timeinSelect = document.querySelector('select[name=timein]');
+const timeoutSelect = document.querySelector('select[name=timeout]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -94,6 +96,14 @@ typeSelect.addEventListener('input', () => {
   if (value !== '') {
     priceInput.reportValidity();
   }
+});
+
+timeinSelect.addEventListener('change', () => {
+  timeoutSelect.value = timeinSelect.value;
+});
+
+timeoutSelect.addEventListener('change', () => {
+  timeinSelect.value = timeoutSelect.value;
 });
 
 const checkCapacity = (rooms, capacity) => {
