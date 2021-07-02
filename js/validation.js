@@ -33,6 +33,8 @@ const priceInput = document.querySelector('input[name=price]');
 const roomsSelect = document.querySelector('select[name=rooms]');
 const capacitySelect = document.querySelector('select[name=capacity]');
 const typeSelect = document.querySelector('select[name=type]');
+const timeinSelect = document.querySelector('select[name=timein]');
+const timeoutSelect = document.querySelector('select[name=timeout]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -49,7 +51,7 @@ titleInput.addEventListener('input', () => {
   titleInput.reportValidity();
 });
 
-priceInput.addEventListener('input', () => {
+const onInput = () => {
   const value = priceInput.value;
   const minValue = priceInput.min;
   let customMessage = '';
@@ -65,7 +67,9 @@ priceInput.addEventListener('input', () => {
   if (value !== '') {
     priceInput.reportValidity();
   }
-});
+};
+
+priceInput.addEventListener('input', onInput);
 
 const setPrice = (type) => {
   switch (type) {
@@ -89,11 +93,16 @@ const setPrice = (type) => {
 
 typeSelect.addEventListener('input', () => {
   setPrice(typeSelect.value);
-  const value = priceInput.value;
 
-  if (value !== '') {
-    priceInput.reportValidity();
-  }
+  onInput();
+});
+
+timeinSelect.addEventListener('change', () => {
+  timeoutSelect.value = timeinSelect.value;
+});
+
+timeoutSelect.addEventListener('change', () => {
+  timeinSelect.value = timeoutSelect.value;
 });
 
 const checkCapacity = (rooms, capacity) => {
