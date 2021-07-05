@@ -15,11 +15,13 @@ const NOT_CAPACITY = 100;
 
 // ?Перечисление?
 // Б8. Название классов, конструкторов и перечислений начинается с заглавной буквы. В названии используются английские существительные. Значения перечислений объявлены как константы.
-const BUNGALOW_MIN_PRICE = 0;
-const FLAT_MIN_PRICE = 1000;
-const HOTEL_MIN_PRICE = 3000;
-const HOUSE_MIN_PRICE = 5000;
-const PALACE_MIN_PRICE = 10000;
+const minPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
 
 const titleInput = document.querySelector('input[name=title]');
 const addressInput = document.querySelector('input[name=address]');
@@ -48,19 +50,19 @@ titleInput.addEventListener('input', () => {
 });
 
 const onInput = () => {
-  const value = priceInput.value;
-  const minValue = priceInput.min;
+  const value = Number(priceInput.value);
+  const minValue = Number(priceInput.min);
   let customMessage = '';
 
   if (value > MAX_PRICE) {
     customMessage = `Максимальная цена за ночь ${MAX_PRICE}`;
-  } else if (value < minValue && value !== '') {
+  } else if (value < minValue && value !== 0) {
     customMessage = `Минимальная цена за ночь ${minValue}`;
   }
 
   priceInput.setCustomValidity(customMessage);
 
-  if (value !== '') {
+  if (value !== 0) {
     priceInput.reportValidity();
   }
 };
@@ -68,23 +70,8 @@ const onInput = () => {
 priceInput.addEventListener('input', onInput);
 
 const setPrice = (type) => {
-  switch (type) {
-    case 'bungalow':
-      priceInput.min = BUNGALOW_MIN_PRICE;
-      return priceInput.placeholder = BUNGALOW_MIN_PRICE;
-    case 'flat':
-      priceInput.min = FLAT_MIN_PRICE;
-      return priceInput.placeholder = FLAT_MIN_PRICE;
-    case 'hotel':
-      priceInput.min = HOTEL_MIN_PRICE;
-      return priceInput.placeholder = HOTEL_MIN_PRICE;
-    case 'house':
-      priceInput.min = HOUSE_MIN_PRICE;
-      return priceInput.placeholder = HOUSE_MIN_PRICE;
-    case 'palace':
-      priceInput.min = PALACE_MIN_PRICE;
-      return priceInput.placeholder = PALACE_MIN_PRICE;
-  }
+  priceInput.min = minPrice[type];
+  priceInput.placeholder = minPrice[type];
 };
 
 typeSelect.addEventListener('input', () => {
