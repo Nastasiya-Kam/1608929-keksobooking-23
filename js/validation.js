@@ -1,20 +1,18 @@
 // todo Разбить на модули?
 
 // todo time-module.js - прописана логика работы полей timein и timeout
-// !всего шесть строк. Нужно ли его выносить в отдельный модуль?
+// ?всего шесть строк. Нужно ли его выносить в отдельный модуль
 // todo price-type-module.js - работа поля с ценой и типом жилья
 // todo rooms-capacity-module.js - работа модулей количество комнат и количество мест
 
 import {resetFilter} from './filter.js';
-import {setMarkerLatLngDefault} from './map.js';
+import {setMarkerLatLngDefault, LatLngDefault} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 const NOT_CAPACITY = 100;
 
-// ?Перечисление?
-// Б8. Название классов, конструкторов и перечислений начинается с заглавной буквы. В названии используются английские существительные. Значения перечислений объявлены как константы.
 const minPrice = {
   bungalow: 0,
   flat: 1000,
@@ -93,7 +91,7 @@ const checkCapacity = (rooms, capacity) => {
   const capacityValue = Number(capacity.value);
   let customMessage = '';
 
-  if (roomsNumber !== 100) {
+  if (roomsNumber !== NOT_CAPACITY) {
     if (roomsNumber < capacityValue || capacityValue === 0) {
       customMessage = `Выбранное количестно комнат предполагает размещение гостей, но не более ${roomsNumber}`;
     }
@@ -135,14 +133,14 @@ capacitySelect.addEventListener('input', () => {
 
 const resetOfferForm = () => {
   titleInput.value = '';
-  addressInput.value = '35.68080, 139.76710';
-  priceInput.value = '';
-  priceInput.placeholder = 1000;
+  addressInput.value = `${LatLngDefault.lat}, ${LatLngDefault.lng}`;
+  priceInput.value = 0; //?магическое число
+  priceInput.placeholder = minPrice.flat;
   typeSelect.value = 'flat';
   timeinSelect.value = '12:00';
   timeoutSelect.value = '12:00';
-  roomsSelect.value = 1;
-  capacitySelect.value = 1;
+  roomsSelect.value = 1; //?магическое число
+  capacitySelect.value = 1; //?магическое число
 
   featuresCheckbox.forEach((value) => {
     value.checked = false;

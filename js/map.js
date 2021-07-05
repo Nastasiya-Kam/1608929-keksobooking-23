@@ -87,4 +87,4 @@ getData((offers) => {
   });
 });
 
-export {setMarkerLatLngDefault};
+export {setMarkerLatLngDefault, LatLngDefault};
