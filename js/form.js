@@ -1,12 +1,9 @@
-// 3. Ограничения, накладываемые на поля ввода
-// ?Возможно соединить с модулем validation.js, т.к. в нём происходит проверка на валидность заполненных данных
+import {resetOfferForm} from './validation.js';
+import {openMessageError} from './messages.js';
+import {sendData} from './api.js';
 
-// function submitForm () {
-//   Если отправка данных прошла успешно, показывается соответствующее сообщение.
-//   Если при отправке данных произошла ошибка запроса, показывается соответствующее сообщение
-// }
-
-import './validation.js';
+const offerForm = document.querySelector('.ad-form');
+const buttonFormReset = document.querySelector('.ad-form__reset');
 
 const setDisabled = (className, isDisabled) => {
   const element = document.querySelector(`.${className}`);
@@ -19,8 +16,6 @@ const setDisabled = (className, isDisabled) => {
 };
 
 const disablePage = () => {
-  // TODO Реализация позднее. На месте карты отображается серый прямоугольник.
-
   setDisabled('ad-form', true);
   setDisabled('map__filters', true);
 };
@@ -28,12 +23,24 @@ const disablePage = () => {
 disablePage();
 
 const enablePage = () => {
-  // TODO После загрузки данных с сервера просматривать похожие объявления на карте,
-  // TODO фильтровать их и
-  // TODO уточнять подробную информацию о них, показывая для каждого из объявлений карточку.
-
   setDisabled('ad-form', false);
   setDisabled('map__filters', false);
 };
 
-export {enablePage};
+const setOfferFormSubmit = (onSuccess) => {
+  offerForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(),
+      () => openMessageError(),
+      new FormData(evt.target),
+    );
+  });
+};
+
+buttonFormReset.addEventListener('click', () => {
+  resetOfferForm();
+});
+
+export {enablePage, setOfferFormSubmit};

@@ -1,11 +1,3 @@
-// function makeValidation () {}
-
-// 2.5. При успешной отправке формы или её очистке...
-// ?либо отдельная функция
-// function resetForm () {
-// }
-// ?либо часть makeValidation
-
 // todo Разбить на модули?
 
 // todo time-module.js - прописана логика работы полей timein и timeout
@@ -13,7 +5,8 @@
 // todo price-type-module.js - работа поля с ценой и типом жилья
 // todo rooms-capacity-module.js - работа модулей количество комнат и количество мест
 
-// todo прописать на листе взаимосвязи модулей
+import {resetFilter} from './filter.js';
+import {setMarkerLatLngDefault} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -29,12 +22,15 @@ const HOUSE_MIN_PRICE = 5000;
 const PALACE_MIN_PRICE = 10000;
 
 const titleInput = document.querySelector('input[name=title]');
+const addressInput = document.querySelector('input[name=address]');
 const priceInput = document.querySelector('input[name=price]');
 const roomsSelect = document.querySelector('select[name=rooms]');
 const capacitySelect = document.querySelector('select[name=capacity]');
 const typeSelect = document.querySelector('select[name=type]');
 const timeinSelect = document.querySelector('select[name=timein]');
 const timeoutSelect = document.querySelector('select[name=timeout]');
+const featuresCheckbox = document.querySelectorAll('.features__checkbox');
+const textareaDescription = document.querySelector('textarea[name=description]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -149,3 +145,26 @@ capacitySelect.addEventListener('input', () => {
 
   capacitySelect.reportValidity();
 });
+
+const resetOfferForm = () => {
+  titleInput.value = '';
+  addressInput.value = '35.68080, 139.76710';
+  priceInput.value = '';
+  priceInput.placeholder = 1000;
+  typeSelect.value = 'flat';
+  timeinSelect.value = '12:00';
+  timeoutSelect.value = '12:00';
+  roomsSelect.value = 1;
+  capacitySelect.value = 1;
+
+  featuresCheckbox.forEach((value) => {
+    value.checked = false;
+  });
+
+  textareaDescription.value = '';
+
+  setMarkerLatLngDefault();
+  resetFilter();
+};
+
+export {resetOfferForm};
