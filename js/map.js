@@ -1,14 +1,21 @@
+import {generateSimilarProperties} from './generation-similar.js';
 import {enablePage} from './form.js';
-import {generateSimilarProperties, similarProperties} from './generation-similar.js';
+import {getData} from './api.js';
 
 const LAT_LNG_DIGIT = 5;
 const address = document.querySelector('#address');
+const SIMILAR_DESCRIPTION_COUNT = 10;
+
+const LatLngDefault = {
+  LAT: 35.68080,
+  LNG: 139.76710,
+};
 
 const map = L.map('map-canvas')
   .on('load', () => enablePage())
   .setView({
-    lat: 35.68080,
-    lng: 139.76710,
+    lat: LatLngDefault.LAT,
+    lng: LatLngDefault.LNG,
   }, 12);
 
 L.tileLayer(
@@ -26,13 +33,21 @@ const mainPinIcon = L.icon({
 
 const marker = L.marker(
   {
-    lat: 35.68080,
-    lng: 139.76710,
+    lat: LatLngDefault.LAT,
+    lng: LatLngDefault.LNG,
   }, {
     draggable: true,
     icon: mainPinIcon,
   },
 );
+
+const setMarkerLatLngDefault = () => {
+  marker.setLatLng(
+    {
+      lat: LatLngDefault.LAT,
+      lng: LatLngDefault.LNG,
+    });
+};
 
 marker.addTo(map);
 
@@ -45,29 +60,31 @@ marker.on('moveend', (evt) => {
   address.value = addressValue;
 });
 
-const points = similarProperties.map((value) => {
-  const lat = value.location.lat;
-  const lng = value.location.lng;
+getData((offers) => {
+  generateSimilarProperties(offers.slice(0, SIMILAR_DESCRIPTION_COUNT)).map(([value, location]) => {
+    const lat = location.lat;
+    const lng = location.lng;
 
-  const pinIcon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40], // todo size??
-    iconAnchor: [20, 40], // todo size??
+    const pinIcon = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+
+    const pin = L.marker(
+      {
+        lat,
+        lng,
+      }, {
+        draggable: true,
+        icon: pinIcon,
+      },
+    );
+
+    pin
+      .addTo(map)
+      .bindPopup(value);
   });
-
-  const pin = L.marker(
-    {
-      lat,
-      lng,
-    }, {
-      draggable: true,
-      icon: pinIcon,
-    },
-  );
-
-  pin
-    .addTo(map)
-    .bindPopup(generateSimilarProperties(value));
 });
 
-points;
+export {setMarkerLatLngDefault, LatLngDefault};

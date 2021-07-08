@@ -1,40 +1,36 @@
-// function makeValidation () {}
-
-// 2.5. При успешной отправке формы или её очистке...
-// ?либо отдельная функция
-// function resetForm () {
-// }
-// ?либо часть makeValidation
-
 // todo Разбить на модули?
 
 // todo time-module.js - прописана логика работы полей timein и timeout
-// !всего шесть строк. Нужно ли его выносить в отдельный модуль?
+// ?всего шесть строк. Нужно ли его выносить в отдельный модуль
 // todo price-type-module.js - работа поля с ценой и типом жилья
 // todo rooms-capacity-module.js - работа модулей количество комнат и количество мест
 
-// todo прописать на листе взаимосвязи модулей
+import {resetFilter} from './filter.js';
+import {setMarkerLatLngDefault, LatLngDefault} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 const NOT_CAPACITY = 100;
 
-// ?Перечисление?
-// Б8. Название классов, конструкторов и перечислений начинается с заглавной буквы. В названии используются английские существительные. Значения перечислений объявлены как константы.
-const BUNGALOW_MIN_PRICE = 0;
-const FLAT_MIN_PRICE = 1000;
-const HOTEL_MIN_PRICE = 3000;
-const HOUSE_MIN_PRICE = 5000;
-const PALACE_MIN_PRICE = 10000;
+const minPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
 
 const titleInput = document.querySelector('input[name=title]');
+const addressInput = document.querySelector('input[name=address]');
 const priceInput = document.querySelector('input[name=price]');
 const roomsSelect = document.querySelector('select[name=rooms]');
 const capacitySelect = document.querySelector('select[name=capacity]');
 const typeSelect = document.querySelector('select[name=type]');
 const timeinSelect = document.querySelector('select[name=timein]');
 const timeoutSelect = document.querySelector('select[name=timeout]');
+const featuresCheckbox = document.querySelectorAll('.features__checkbox');
+const textareaDescription = document.querySelector('textarea[name=description]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -52,19 +48,19 @@ titleInput.addEventListener('input', () => {
 });
 
 const onInput = () => {
-  const value = priceInput.value;
-  const minValue = priceInput.min;
+  const value = Number(priceInput.value);
+  const minValue = Number(priceInput.min);
   let customMessage = '';
 
   if (value > MAX_PRICE) {
     customMessage = `Максимальная цена за ночь ${MAX_PRICE}`;
-  } else if (value < minValue && value !== '') {
+  } else if (value < minValue && value !== 0) {
     customMessage = `Минимальная цена за ночь ${minValue}`;
   }
 
   priceInput.setCustomValidity(customMessage);
 
-  if (value !== '') {
+  if (value !== 0) {
     priceInput.reportValidity();
   }
 };
@@ -72,23 +68,8 @@ const onInput = () => {
 priceInput.addEventListener('input', onInput);
 
 const setPrice = (type) => {
-  switch (type) {
-    case 'bungalow':
-      priceInput.min = BUNGALOW_MIN_PRICE;
-      return priceInput.placeholder = BUNGALOW_MIN_PRICE;
-    case 'flat':
-      priceInput.min = FLAT_MIN_PRICE;
-      return priceInput.placeholder = FLAT_MIN_PRICE;
-    case 'hotel':
-      priceInput.min = HOTEL_MIN_PRICE;
-      return priceInput.placeholder = HOTEL_MIN_PRICE;
-    case 'house':
-      priceInput.min = HOUSE_MIN_PRICE;
-      return priceInput.placeholder = HOUSE_MIN_PRICE;
-    case 'palace':
-      priceInput.min = PALACE_MIN_PRICE;
-      return priceInput.placeholder = PALACE_MIN_PRICE;
-  }
+  priceInput.min = minPrice[type];
+  priceInput.placeholder = minPrice[type];
 };
 
 typeSelect.addEventListener('input', () => {
@@ -110,7 +91,7 @@ const checkCapacity = (rooms, capacity) => {
   const capacityValue = Number(capacity.value);
   let customMessage = '';
 
-  if (roomsNumber !== 100) {
+  if (roomsNumber !== NOT_CAPACITY) {
     if (roomsNumber < capacityValue || capacityValue === 0) {
       customMessage = `Выбранное количестно комнат предполагает размещение гостей, но не более ${roomsNumber}`;
     }
@@ -149,3 +130,26 @@ capacitySelect.addEventListener('input', () => {
 
   capacitySelect.reportValidity();
 });
+
+const resetOfferForm = () => {
+  titleInput.value = '';
+  addressInput.value = `${LatLngDefault.lat}, ${LatLngDefault.lng}`;
+  priceInput.value = 0; //?магическое число
+  priceInput.placeholder = minPrice.flat;
+  typeSelect.value = 'flat';
+  timeinSelect.value = '12:00';
+  timeoutSelect.value = '12:00';
+  roomsSelect.value = 1; //?магическое число
+  capacitySelect.value = 1; //?магическое число
+
+  featuresCheckbox.forEach((value) => {
+    value.checked = false;
+  });
+
+  textareaDescription.value = '';
+
+  setMarkerLatLngDefault();
+  resetFilter();
+};
+
+export {resetOfferForm};
