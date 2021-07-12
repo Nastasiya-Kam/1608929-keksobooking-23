@@ -2,7 +2,9 @@ import {generateSimilarProperties} from './generation-similar.js';
 import {enablePage} from './form.js';
 import {getData} from './api.js';
 import {onTypeFilterClick, onPriceFilterClick, onRoomsFilterClick, onGuestsFilterClick, onHousingMapFeaturesChange} from './filter.js';
+import {throttle} from './utils.js';
 
+const RERENDER_DELAY = 500;
 const LAT_LNG_DIGIT = 5;
 const address = document.querySelector('#address');
 
@@ -76,6 +78,7 @@ const showPins = (properties) => {
         lat,
         lng,
       }, {
+        // ?Нужно ли убрать draggable, т.к. при перемещении меток адрес не меняется
         // draggable: true,
         icon: pinIcon,
       },
@@ -91,33 +94,49 @@ const showPins = (properties) => {
   return pins;
 };
 
+// ?Как вынести общую функцию
+// const resetMarkers = (markers, offers) => {
+//   markers.forEach((value) => map.removeLayer(value));
+//   markers = showPins(generateSimilarProperties(offers));
+// };
+
 getData((offers) => {
   let markers = showPins(generateSimilarProperties(offers));
 
-  onTypeFilterClick(() => {
-    markers.forEach((value) => map.removeLayer(value));
-    markers = showPins(generateSimilarProperties(offers));
-  });
+  onTypeFilterClick(throttle(
+    () => {
+      markers.forEach((value) => map.removeLayer(value));
+      markers = showPins(generateSimilarProperties(offers));
+    }, RERENDER_DELAY,
+  ));
 
-  onPriceFilterClick(() => {
-    markers.forEach((value) => map.removeLayer(value));
-    markers = showPins(generateSimilarProperties(offers));
-  });
+  onPriceFilterClick(throttle(
+    () => {
+      markers.forEach((value) => map.removeLayer(value));
+      markers = showPins(generateSimilarProperties(offers));
+    }, RERENDER_DELAY,
+  ));
 
-  onRoomsFilterClick(() => {
-    markers.forEach((value) => map.removeLayer(value));
-    markers = showPins(generateSimilarProperties(offers));
-  });
+  onRoomsFilterClick(throttle(
+    () => {
+      markers.forEach((value) => map.removeLayer(value));
+      markers = showPins(generateSimilarProperties(offers));
+    }, RERENDER_DELAY,
+  ));
 
-  onGuestsFilterClick(() => {
-    markers.forEach((value) => map.removeLayer(value));
-    markers = showPins(generateSimilarProperties(offers));
-  });
+  onGuestsFilterClick(throttle(
+    () => {
+      markers.forEach((value) => map.removeLayer(value));
+      markers = showPins(generateSimilarProperties(offers));
+    }, RERENDER_DELAY,
+  ));
 
-  onHousingMapFeaturesChange(() => {
-    markers.forEach((value) => map.removeLayer(value));
-    markers = showPins(generateSimilarProperties(offers));
-  });
+  onHousingMapFeaturesChange(throttle(
+    () => {
+      markers.forEach((value) => map.removeLayer(value));
+      markers = showPins(generateSimilarProperties(offers));
+    }, RERENDER_DELAY,
+  ));
 });
 
 export {setMarkerLatLngDefault, LatLngDefault};
