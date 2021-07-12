@@ -43,4 +43,4 @@ buttonFormReset.addEventListener('click', () => {
   resetOfferForm();
 });
 
-export {enablePage, setOfferFormSubmit};
+export {enablePage, disablePage, setOfferFormSubmit};

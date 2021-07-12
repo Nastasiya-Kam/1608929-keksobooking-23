@@ -21,16 +21,16 @@ const minPrice = {
   palace: 10000,
 };
 
-const titleInput = document.querySelector('input[name=title]');
-const addressInput = document.querySelector('input[name=address]');
-const priceInput = document.querySelector('input[name=price]');
-const roomsSelect = document.querySelector('select[name=rooms]');
-const capacitySelect = document.querySelector('select[name=capacity]');
-const typeSelect = document.querySelector('select[name=type]');
-const timeinSelect = document.querySelector('select[name=timein]');
-const timeoutSelect = document.querySelector('select[name=timeout]');
+const titleInput = document.querySelector('input[name="title"]');
+const addressInput = document.querySelector('input[name="address"]');
+const priceInput = document.querySelector('input[name="price"]');
+const roomsSelect = document.querySelector('select[name="rooms"]');
+const capacitySelect = document.querySelector('select[name="capacity"]');
+const typeSelect = document.querySelector('select[name="type"]');
+const timeinSelect = document.querySelector('select[name="timein"]');
+const timeoutSelect = document.querySelector('select[name="timeout"]');
 const featuresCheckbox = document.querySelectorAll('.features__checkbox');
-const textareaDescription = document.querySelector('textarea[name=description]');
+const textareaDescription = document.querySelector('textarea[name="description"]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;

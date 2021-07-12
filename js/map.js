@@ -1,10 +1,10 @@
 import {generateSimilarProperties} from './generation-similar.js';
 import {enablePage} from './form.js';
 import {getData} from './api.js';
+import {onTypeFilterClick, onPriceFilterClick, onRoomsFilterClick, onGuestsFilterClick, onHousingMapFeaturesChange} from './filter.js';
 
 const LAT_LNG_DIGIT = 5;
 const address = document.querySelector('#address');
-const SIMILAR_DESCRIPTION_COUNT = 10;
 
 const LatLngDefault = {
   LAT: 35.68080,
@@ -27,8 +27,8 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [52, 52], // todo size??
-  iconAnchor: [26, 52], // todo size??
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
 });
 
 const marker = L.marker(
@@ -60,8 +60,8 @@ marker.on('moveend', (evt) => {
   address.value = addressValue;
 });
 
-getData((offers) => {
-  generateSimilarProperties(offers.slice(0, SIMILAR_DESCRIPTION_COUNT)).map(([value, location]) => {
+const showPins = (properties) => {
+  const pins = properties.map(([value, location]) => {
     const lat = location.lat;
     const lng = location.lng;
 
@@ -76,7 +76,7 @@ getData((offers) => {
         lat,
         lng,
       }, {
-        draggable: true,
+        // draggable: true,
         icon: pinIcon,
       },
     );
@@ -84,6 +84,39 @@ getData((offers) => {
     pin
       .addTo(map)
       .bindPopup(value);
+
+    return pin;
+  });
+
+  return pins;
+};
+
+getData((offers) => {
+  let markers = showPins(generateSimilarProperties(offers));
+
+  onTypeFilterClick(() => {
+    markers.forEach((value) => map.removeLayer(value));
+    markers = showPins(generateSimilarProperties(offers));
+  });
+
+  onPriceFilterClick(() => {
+    markers.forEach((value) => map.removeLayer(value));
+    markers = showPins(generateSimilarProperties(offers));
+  });
+
+  onRoomsFilterClick(() => {
+    markers.forEach((value) => map.removeLayer(value));
+    markers = showPins(generateSimilarProperties(offers));
+  });
+
+  onGuestsFilterClick(() => {
+    markers.forEach((value) => map.removeLayer(value));
+    markers = showPins(generateSimilarProperties(offers));
+  });
+
+  onHousingMapFeaturesChange(() => {
+    markers.forEach((value) => map.removeLayer(value));
+    markers = showPins(generateSimilarProperties(offers));
   });
 });
 
