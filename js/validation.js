@@ -1,5 +1,4 @@
-import {setMarkerLatLngDefault} from './map.js';
-import {putOffersOnMap} from './map.js';
+import {setMarkerLatLngDefault, putOffersOnMap} from './map.js';
 import {getData} from './api.js';
 
 const MIN_TITLE_LENGTH = 30;
@@ -17,7 +16,6 @@ const minPrice = {
 
 const formMapFilters = document.querySelector('.map__filters');
 const formAddOffer = document.querySelector('.ad-form');
-
 const titleInput = formAddOffer.querySelector('input[name="title"]');
 const priceInput = formAddOffer.querySelector('input[name="price"]');
 const roomsSelect = formAddOffer.querySelector('select[name="rooms"]');
@@ -37,7 +35,6 @@ titleInput.addEventListener('input', () => {
   }
 
   titleInput.setCustomValidity(customMessage);
-
   titleInput.reportValidity();
 });
 
