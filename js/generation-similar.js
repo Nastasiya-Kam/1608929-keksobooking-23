@@ -1,4 +1,3 @@
-// ?Закглавными буквами сделать FLAT, BUNGALOW, HOUSE или ничего не делать
 const typeHousing = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -8,18 +7,11 @@ const typeHousing = {
 };
 
 const Price = {
-  low: 10000,
-  high: 50000,
-  default: 'any',
+  LOW: 10000,
+  HIGH: 50000,
 };
 
-// ?DEFAULT_TYPE = 'any';
-const Default = {
-  TYPE: 'any',
-  PRICE: 'any',
-  ROOMS: 'any',
-  GUESTS: 'any',
-};
+const DEFAULT_VALUE = 'any';
 
 const SIMILAR_DESCRIPTION_COUNT = 10;
 
@@ -61,33 +53,16 @@ const checkParameter = (template, parameter, text, className) => {
   (parameter) ? element.textContent = text : hideElement(element);
 };
 
-const getPropertyRank = (property) => {
-  const housingFeaturesFilter = document.querySelectorAll('.map__checkbox');
+const getCheckedFeatures = (array) => {
+  const checkedArray = [];
 
-  let rank = 0;
+  array.forEach((element) => {
+    if (element.checked) {
+      checkedArray.push(element.value);
+    }
+  });
 
-  if (property.offer.features) {
-    property.offer.features.forEach((featureOffer) => {
-      housingFeaturesFilter.forEach((featureCheckbox) => {
-        if (featureOffer === featureCheckbox.value && featureCheckbox.checked) {
-          rank += 2;
-        } else if (featureOffer === featureCheckbox.value && !featureCheckbox.checked) {
-          rank += 1;
-        }
-      });
-    });
-  }
-
-  property.rank = rank;
-
-  return rank;
-};
-
-const compareProperties = (propertyA, propertyB) => {
-  const rankA = getPropertyRank(propertyA);
-  const rankB = getPropertyRank(propertyB);
-
-  return rankB - rankA;
+  return checkedArray;
 };
 
 const filterOffers = (property) => {
@@ -95,37 +70,47 @@ const filterOffers = (property) => {
   const housingPriceFilter = document.querySelector('select[name="housing-price"]');
   const housingRoomsFilter = document.querySelector('select[name="housing-rooms"]');
   const housingGuestsFilter = document.querySelector('select[name="housing-guests"]');
+  const housingMapFeatures = document.querySelectorAll('.map__checkbox');
+
+  const checkedFeatures = getCheckedFeatures(housingMapFeatures);
 
   let isValidType = false;
   let isValidPrice = false;
   let isValidRooms = false;
   let isValidGuests = false;
-  const isValidFeatures = property.rank > 0;
-  // isValidFeatures = property.rank > 0;
+  let isValidFeatures = true;
 
-  isValidType = (property.offer.type === housingTypeFilter.value || housingTypeFilter.value === Default.TYPE);
+  isValidType = (property.offer.type === housingTypeFilter.value || housingTypeFilter.value === DEFAULT_VALUE);
 
   switch (true) {
-    case housingPriceFilter.value === Default.PRICE:
+    case housingPriceFilter.value === DEFAULT_VALUE:
       isValidPrice = true;
       break;
-    case housingPriceFilter.value === 'middle' && property.offer.price >= Price.low && property.offer.price < Price.high:
+    case housingPriceFilter.value === 'middle' && property.offer.price >= Price.LOW && property.offer.price < Price.HIGH:
       isValidPrice = true;
       break;
-    case housingPriceFilter.value === 'low' && property.offer.price < Price.low:
+    case housingPriceFilter.value === 'low' && property.offer.price < Price.LOW:
       isValidPrice = true;
       break;
-    case housingPriceFilter.value === 'high' && property.offer.price >= Price.high:
+    case housingPriceFilter.value === 'high' && property.offer.price >= Price.HIGH:
       isValidPrice = true;
       break;
   }
 
-  if (property.offer.rooms === Number(housingRoomsFilter.value) || housingRoomsFilter.value === Default.ROOMS) {
+  if (property.offer.rooms === Number(housingRoomsFilter.value) || housingRoomsFilter.value === DEFAULT_VALUE) {
     isValidRooms = true;
   }
 
-  if (property.offer.guests === Number(housingGuestsFilter.value) || housingGuestsFilter.value === Default.GUESTS) {
+  if (property.offer.guests === Number(housingGuestsFilter.value) || housingGuestsFilter.value === DEFAULT_VALUE) {
     isValidGuests = true;
+  }
+
+  if (checkedFeatures.length) {
+    if (property.offer.features) {
+      isValidFeatures = checkedFeatures.every((feature) => property.offer.features.includes(feature));
+    } else {
+      isValidFeatures = false;
+    }
   }
 
   if (isValidType && isValidPrice && isValidRooms && isValidGuests && isValidFeatures) {
@@ -136,8 +121,6 @@ const filterOffers = (property) => {
 const generateSimilarProperties = (descriptionOffer) => {
   const array = descriptionOffer
     .slice()
-    // ?Поменять местами filter() и sort(), чтобы рейтинг был выше 1? Но как передать рейтинг filter()?
-    .sort(compareProperties)
     .filter(filterOffers)
     .slice(0, SIMILAR_DESCRIPTION_COUNT)
     .map(({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}, location}) => {
