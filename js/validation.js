@@ -124,14 +124,17 @@ capacitySelect.addEventListener('input', () => {
   capacitySelect.reportValidity();
 });
 
+
+// todo использовать метод reset() MDN
+
 const resetOfferForm = () => {
-  titleInput.value = '';
+  titleInput.value = ''; //todo через словарь или коллекцию?
   addressInput.value = `${LatLngDefault.lat}, ${LatLngDefault.lng}`;
   priceInput.value = 0; //?магическое число
   priceInput.placeholder = minPrice.flat;
   typeSelect.value = 'flat';
   timeinSelect.value = '12:00';
-  timeoutSelect.value = '12:00';
+  timeoutSelect.value = '12:00'; //?магическое значение
   roomsSelect.value = 1; //?магическое число
   capacitySelect.value = 1; //?магическое числ
 

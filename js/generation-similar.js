@@ -1,4 +1,4 @@
-// ?Словарь или перечисление?
+// ?Закглавными буквами сделать FLAT, BUNGALOW, HOUSE или ничего не делать
 const typeHousing = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -13,7 +13,7 @@ const Price = {
   default: 'any',
 };
 
-// ?Нужна ли переменная
+// ?DEFAULT_TYPE = 'any';
 const Default = {
   TYPE: 'any',
   PRICE: 'any',
@@ -78,6 +78,8 @@ const getPropertyRank = (property) => {
     });
   }
 
+  property.rank = rank;
+
   return rank;
 };
 
@@ -89,7 +91,6 @@ const compareProperties = (propertyA, propertyB) => {
 };
 
 const filterOffers = (property) => {
-  // ?такие же переменные определяются в модуле filter.js. Допустимо ли?
   const housingTypeFilter = document.querySelector('select[name="housing-type"]');
   const housingPriceFilter = document.querySelector('select[name="housing-price"]');
   const housingRoomsFilter = document.querySelector('select[name="housing-rooms"]');
@@ -99,10 +100,11 @@ const filterOffers = (property) => {
   let isValidPrice = false;
   let isValidRooms = false;
   let isValidGuests = false;
+  const isValidFeatures = property.rank > 0;
+  // isValidFeatures = property.rank > 0;
 
   isValidType = (property.offer.type === housingTypeFilter.value || housingTypeFilter.value === Default.TYPE);
 
-  // ?Нужно ли завести "коллекцию" или словарь на any, middle, low...
   switch (true) {
     case housingPriceFilter.value === Default.PRICE:
       isValidPrice = true;
@@ -118,17 +120,15 @@ const filterOffers = (property) => {
       break;
   }
 
-  // ? Если комнат больше, чем 2, то какой фильтр?
   if (property.offer.rooms === Number(housingRoomsFilter.value) || housingRoomsFilter.value === Default.ROOMS) {
     isValidRooms = true;
   }
 
-  // ? Если гостей больше, чем 2, то какой фильтр?
   if (property.offer.guests === Number(housingGuestsFilter.value) || housingGuestsFilter.value === Default.GUESTS) {
     isValidGuests = true;
   }
 
-  if (isValidType && isValidPrice && isValidRooms && isValidGuests) {
+  if (isValidType && isValidPrice && isValidRooms && isValidGuests && isValidFeatures) {
     return property;
   }
 };
@@ -136,8 +136,9 @@ const filterOffers = (property) => {
 const generateSimilarProperties = (descriptionOffer) => {
   const array = descriptionOffer
     .slice()
-    .filter(filterOffers)
+    // ?Поменять местами filter() и sort(), чтобы рейтинг был выше 1? Но как передать рейтинг filter()?
     .sort(compareProperties)
+    .filter(filterOffers)
     .slice(0, SIMILAR_DESCRIPTION_COUNT)
     .map(({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}, location}) => {
       const cardElement = cardTemplate.cloneNode(true);

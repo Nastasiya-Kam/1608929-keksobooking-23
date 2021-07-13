@@ -1,7 +1,7 @@
 import {generateSimilarProperties} from './generation-similar.js';
 import {enablePage} from './form.js';
 import {getData} from './api.js';
-import {onTypeFilterClick, onPriceFilterClick, onRoomsFilterClick, onGuestsFilterClick, onHousingMapFeaturesChange} from './filter.js';
+import {onFilterChange} from './filter.js';
 import {debounce} from './utils.js';
 
 const RERENDER_DELAY = 500;
@@ -79,8 +79,6 @@ const showPins = (properties) => {
         lat,
         lng,
       }, {
-        // ?Нужно ли убрать draggable, т.к. при перемещении меток адрес не меняется
-        // draggable: true,
         icon: pinIcon,
       },
     );
@@ -95,44 +93,10 @@ const showPins = (properties) => {
   return pins;
 };
 
-// ?Как вынести общую функцию
-// const resetMarkers = (markers, offers) => {
-//   markers.forEach((value) => map.removeLayer(value));
-//   markers = showPins(generateSimilarProperties(offers));
-// };
-
 getData((offers) => {
   let markers = showPins(generateSimilarProperties(offers));
 
-  onTypeFilterClick(debounce(
-    () => {
-      markers.forEach((value) => map.removeLayer(value));
-      markers = showPins(generateSimilarProperties(offers));
-    }, RERENDER_DELAY,
-  ));
-
-  onPriceFilterClick(debounce(
-    () => {
-      markers.forEach((value) => map.removeLayer(value));
-      markers = showPins(generateSimilarProperties(offers));
-    }, RERENDER_DELAY,
-  ));
-
-  onRoomsFilterClick(debounce(
-    () => {
-      markers.forEach((value) => map.removeLayer(value));
-      markers = showPins(generateSimilarProperties(offers));
-    }, RERENDER_DELAY,
-  ));
-
-  onGuestsFilterClick(debounce(
-    () => {
-      markers.forEach((value) => map.removeLayer(value));
-      markers = showPins(generateSimilarProperties(offers));
-    }, RERENDER_DELAY,
-  ));
-
-  onHousingMapFeaturesChange(debounce(
+  onFilterChange(debounce(
     () => {
       markers.forEach((value) => map.removeLayer(value));
       markers = showPins(generateSimilarProperties(offers));
