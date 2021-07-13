@@ -1,9 +1,16 @@
+// ?Словарь или перечисление?
 const typeHousing = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец',
   hotel: 'Отель',
+};
+
+const Price = {
+  low: 10000,
+  high: 50000,
+  default: 'any',
 };
 
 // ?Нужна ли переменная
@@ -54,14 +61,14 @@ const checkParameter = (template, parameter, text, className) => {
   (parameter) ? element.textContent = text : hideElement(element);
 };
 
-const getPropertiesRank = (property) => {
-  const housingFeatures = document.querySelectorAll('.map__checkbox');
+const getPropertyRank = (property) => {
+  const housingFeaturesFilter = document.querySelectorAll('.map__checkbox');
 
   let rank = 0;
 
   if (property.offer.features) {
     property.offer.features.forEach((featureOffer) => {
-      housingFeatures.forEach((featureCheckbox) => {
+      housingFeaturesFilter.forEach((featureCheckbox) => {
         if (featureOffer === featureCheckbox.value && featureCheckbox.checked) {
           rank += 2;
         } else if (featureOffer === featureCheckbox.value && !featureCheckbox.checked) {
@@ -75,13 +82,14 @@ const getPropertiesRank = (property) => {
 };
 
 const compareProperties = (propertyA, propertyB) => {
-  const rankA = getPropertiesRank(propertyA);
-  const rankB = getPropertiesRank(propertyB);
+  const rankA = getPropertyRank(propertyA);
+  const rankB = getPropertyRank(propertyB);
 
   return rankB - rankA;
 };
 
 const filterOffers = (property) => {
+  // ?такие же переменные определяются в модуле filter.js. Допустимо ли?
   const housingTypeFilter = document.querySelector('select[name="housing-type"]');
   const housingPriceFilter = document.querySelector('select[name="housing-price"]');
   const housingRoomsFilter = document.querySelector('select[name="housing-rooms"]');
@@ -95,24 +103,18 @@ const filterOffers = (property) => {
   isValidType = (property.offer.type === housingTypeFilter.value || housingTypeFilter.value === Default.TYPE);
 
   // ?Нужно ли завести "коллекцию" или словарь на any, middle, low...
-  switch (housingPriceFilter.value) {
-    case 'any':
+  switch (true) {
+    case housingPriceFilter.value === Default.PRICE:
       isValidPrice = true;
       break;
-    case 'middle':
-      if (property.offer.price >= 10000 && property.offer.price < 50000) {
-        isValidPrice = true;
-      }
+    case housingPriceFilter.value === 'middle' && property.offer.price >= Price.low && property.offer.price < Price.high:
+      isValidPrice = true;
       break;
-    case 'low':
-      if (property.offer.price < 10000) {
-        isValidPrice = true;
-      }
+    case housingPriceFilter.value === 'low' && property.offer.price < Price.low:
+      isValidPrice = true;
       break;
-    case 'high':
-      if (property.offer.price >= 50000) {
-        isValidPrice = true;
-      }
+    case housingPriceFilter.value === 'high' && property.offer.price >= Price.high:
+      isValidPrice = true;
       break;
   }
 
@@ -132,7 +134,6 @@ const filterOffers = (property) => {
 };
 
 const generateSimilarProperties = (descriptionOffer) => {
-
   const array = descriptionOffer
     .slice()
     .filter(filterOffers)

@@ -1,10 +1,3 @@
-// todo Разбить на модули?
-
-// todo time-module.js - прописана логика работы полей timein и timeout
-// ?всего шесть строк. Нужно ли его выносить в отдельный модуль
-// todo price-type-module.js - работа поля с ценой и типом жилья
-// todo rooms-capacity-module.js - работа модулей количество комнат и количество мест
-
 import {resetFilter} from './filter.js';
 import {setMarkerLatLngDefault, LatLngDefault} from './map.js';
 
@@ -140,7 +133,7 @@ const resetOfferForm = () => {
   timeinSelect.value = '12:00';
   timeoutSelect.value = '12:00';
   roomsSelect.value = 1; //?магическое число
-  capacitySelect.value = 1; //?магическое число
+  capacitySelect.value = 1; //?магическое числ
 
   featuresCheckbox.forEach((value) => {
     value.checked = false;

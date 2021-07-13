@@ -4,7 +4,7 @@ const housingTypeFilter = document.querySelector('select[name=housing-type]');
 const housingPriceFilter = document.querySelector('select[name=housing-price]');
 const housingRoomsFilter = document.querySelector('select[name=housing-rooms]');
 const housingGuestsFilter = document.querySelector('select[name=housing-guests]');
-const housingMapFeatures = document.querySelector('.map__features');
+const housingMapFeaturesFilter = document.querySelector('.map__features');
 
 const resetFilter = () => {
   mapFilters.forEach((value) => value.value = 'any');
@@ -36,7 +36,7 @@ const onGuestsFilterClick = (cb) => {
 };
 
 const onHousingMapFeaturesChange = (cb) => {
-  housingMapFeatures.addEventListener('change', (evt) => {
+  housingMapFeaturesFilter.addEventListener('change', (evt) => {
     if (evt.target && evt.target.matches('input[type="checkbox"]')) {
       cb();
     }

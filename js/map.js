@@ -6,12 +6,13 @@ import {throttle} from './utils.js';
 
 const RERENDER_DELAY = 500;
 const LAT_LNG_DIGIT = 5;
-const address = document.querySelector('#address');
 
 const LatLngDefault = {
   LAT: 35.68080,
   LNG: 139.76710,
 };
+
+const address = document.querySelector('#address');
 
 const map = L.map('map-canvas')
   .on('load', () => enablePage())
