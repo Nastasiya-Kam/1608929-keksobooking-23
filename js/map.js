@@ -1,15 +1,18 @@
 import {generateSimilarProperties} from './generation-similar.js';
 import {enablePage} from './form.js';
 import {getData} from './api.js';
+import {onFilterChange} from './filter.js';
+import {debounce} from './utils.js';
 
+const RERENDER_DELAY = 500;
 const LAT_LNG_DIGIT = 5;
-const address = document.querySelector('#address');
-const SIMILAR_DESCRIPTION_COUNT = 10;
 
 const LatLngDefault = {
   LAT: 35.68080,
   LNG: 139.76710,
 };
+
+const address = document.querySelector('#address');
 
 const map = L.map('map-canvas')
   .on('load', () => enablePage())
@@ -27,8 +30,8 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [52, 52], // todo size??
-  iconAnchor: [26, 52], // todo size??
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
 });
 
 const marker = L.marker(
@@ -60,8 +63,8 @@ marker.on('moveend', (evt) => {
   address.value = addressValue;
 });
 
-getData((offers) => {
-  generateSimilarProperties(offers.slice(0, SIMILAR_DESCRIPTION_COUNT)).map(([value, location]) => {
+const showPins = (properties) => {
+  const pins = properties.map(([value, location]) => {
     const lat = location.lat;
     const lng = location.lng;
 
@@ -76,7 +79,6 @@ getData((offers) => {
         lat,
         lng,
       }, {
-        draggable: true,
         icon: pinIcon,
       },
     );
@@ -84,7 +86,24 @@ getData((offers) => {
     pin
       .addTo(map)
       .bindPopup(value);
-  });
-});
 
-export {setMarkerLatLngDefault, LatLngDefault};
+    return pin;
+  });
+
+  return pins;
+};
+
+const putOffersOnMap = (offers) => {
+  let markers = showPins(generateSimilarProperties(offers));
+
+  onFilterChange(debounce(
+    () => {
+      markers.forEach((value) => map.removeLayer(value));
+      markers = showPins(generateSimilarProperties(offers));
+    }, RERENDER_DELAY,
+  ));
+};
+
+getData((offers) => putOffersOnMap(offers));
+
+export {setMarkerLatLngDefault, putOffersOnMap};

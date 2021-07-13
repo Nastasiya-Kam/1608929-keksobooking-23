@@ -1,3 +1,5 @@
+import {filterOffers} from './filter.js';
+
 const typeHousing = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -6,6 +8,7 @@ const typeHousing = {
   hotel: 'Отель',
 };
 
+const SIMILAR_DESCRIPTION_COUNT = 10;
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const getType = (type) => typeHousing[type];
@@ -45,22 +48,26 @@ const checkParameter = (template, parameter, text, className) => {
 };
 
 const generateSimilarProperties = (descriptionOffer) => {
-  const array = descriptionOffer.map(({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}, location}) => {
-    const cardElement = cardTemplate.cloneNode(true);
+  const array = descriptionOffer
+    .slice()
+    .filter(filterOffers)
+    .slice(0, SIMILAR_DESCRIPTION_COUNT)
+    .map(({author: {avatar}, offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}, location}) => {
+      const cardElement = cardTemplate.cloneNode(true);
 
-    checkParameter(cardElement, title, title, '.popup__title');
-    checkParameter(cardElement, address, address, '.popup__text--address');
-    checkParameter(cardElement, price, `${price} ₽/ночь`, '.popup__text--price');
-    checkParameter(cardElement, type, getType(type), '.popup__type');
-    checkParameter(cardElement, rooms && guests, `${rooms} комнаты для ${guests} гостей`, '.popup__text--capacity');
-    checkParameter(cardElement, checkin && checkout, `Заезд после ${checkin}, выезд до ${checkout}`, '.popup__text--time');
-    (features) ? getFeatures(features, cardElement) : hideElement(cardElement.querySelector('.popup__features'));
-    checkParameter(cardElement, description, description, '.popup__description');
-    (photos) ? getPhotos(cardElement.querySelector('.popup__photos'), photos) : hideElement(cardElement.querySelector('.popup__photos'));
-    (avatar) ? cardElement.querySelector('.popup__avatar').src = avatar : hideElement(cardElement.querySelector('.popup__avatar'));
+      checkParameter(cardElement, title, title, '.popup__title');
+      checkParameter(cardElement, address, address, '.popup__text--address');
+      checkParameter(cardElement, price, `${price} ₽/ночь`, '.popup__text--price');
+      checkParameter(cardElement, type, getType(type), '.popup__type');
+      checkParameter(cardElement, rooms && guests, `${rooms} комнаты для ${guests} гостей`, '.popup__text--capacity');
+      checkParameter(cardElement, checkin && checkout, `Заезд после ${checkin}, выезд до ${checkout}`, '.popup__text--time');
+      (features) ? getFeatures(features, cardElement) : hideElement(cardElement.querySelector('.popup__features'));
+      checkParameter(cardElement, description, description, '.popup__description');
+      (photos) ? getPhotos(cardElement.querySelector('.popup__photos'), photos) : hideElement(cardElement.querySelector('.popup__photos'));
+      (avatar) ? cardElement.querySelector('.popup__avatar').src = avatar : hideElement(cardElement.querySelector('.popup__avatar'));
 
-    return [cardElement, location];
-  });
+      return [cardElement, location];
+    });
 
   return array;
 };

@@ -1,12 +1,5 @@
-// todo Разбить на модули?
-
-// todo time-module.js - прописана логика работы полей timein и timeout
-// ?всего шесть строк. Нужно ли его выносить в отдельный модуль
-// todo price-type-module.js - работа поля с ценой и типом жилья
-// todo rooms-capacity-module.js - работа модулей количество комнат и количество мест
-
-import {resetFilter} from './filter.js';
-import {setMarkerLatLngDefault, LatLngDefault} from './map.js';
+import {setMarkerLatLngDefault, putOffersOnMap} from './map.js';
+import {getData} from './api.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -21,16 +14,15 @@ const minPrice = {
   palace: 10000,
 };
 
-const titleInput = document.querySelector('input[name=title]');
-const addressInput = document.querySelector('input[name=address]');
-const priceInput = document.querySelector('input[name=price]');
-const roomsSelect = document.querySelector('select[name=rooms]');
-const capacitySelect = document.querySelector('select[name=capacity]');
-const typeSelect = document.querySelector('select[name=type]');
-const timeinSelect = document.querySelector('select[name=timein]');
-const timeoutSelect = document.querySelector('select[name=timeout]');
-const featuresCheckbox = document.querySelectorAll('.features__checkbox');
-const textareaDescription = document.querySelector('textarea[name=description]');
+const formMapFilters = document.querySelector('.map__filters');
+const formAddOffer = document.querySelector('.ad-form');
+const titleInput = formAddOffer.querySelector('input[name="title"]');
+const priceInput = formAddOffer.querySelector('input[name="price"]');
+const roomsSelect = formAddOffer.querySelector('select[name="rooms"]');
+const capacitySelect = formAddOffer.querySelector('select[name="capacity"]');
+const typeSelect = formAddOffer.querySelector('select[name="type"]');
+const timeinSelect = formAddOffer.querySelector('select[name="timein"]');
+const timeoutSelect = formAddOffer.querySelector('select[name="timeout"]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -43,7 +35,6 @@ titleInput.addEventListener('input', () => {
   }
 
   titleInput.setCustomValidity(customMessage);
-
   titleInput.reportValidity();
 });
 
@@ -132,24 +123,12 @@ capacitySelect.addEventListener('input', () => {
 });
 
 const resetOfferForm = () => {
-  titleInput.value = '';
-  addressInput.value = `${LatLngDefault.lat}, ${LatLngDefault.lng}`;
-  priceInput.value = 0; //?магическое число
-  priceInput.placeholder = minPrice.flat;
-  typeSelect.value = 'flat';
-  timeinSelect.value = '12:00';
-  timeoutSelect.value = '12:00';
-  roomsSelect.value = 1; //?магическое число
-  capacitySelect.value = 1; //?магическое число
-
-  featuresCheckbox.forEach((value) => {
-    value.checked = false;
-  });
-
-  textareaDescription.value = '';
+  formMapFilters.reset();
+  formAddOffer.reset();
+  priceInput.placeholder = '1000';
 
   setMarkerLatLngDefault();
-  resetFilter();
+  getData((offers) => putOffersOnMap(offers));
 };
 
 export {resetOfferForm};
