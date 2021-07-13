@@ -2,7 +2,7 @@ import {generateSimilarProperties} from './generation-similar.js';
 import {enablePage} from './form.js';
 import {getData} from './api.js';
 import {onTypeFilterClick, onPriceFilterClick, onRoomsFilterClick, onGuestsFilterClick, onHousingMapFeaturesChange} from './filter.js';
-import {throttle} from './utils.js';
+import {debounce} from './utils.js';
 
 const RERENDER_DELAY = 500;
 const LAT_LNG_DIGIT = 5;
@@ -104,35 +104,35 @@ const showPins = (properties) => {
 getData((offers) => {
   let markers = showPins(generateSimilarProperties(offers));
 
-  onTypeFilterClick(throttle(
+  onTypeFilterClick(debounce(
     () => {
       markers.forEach((value) => map.removeLayer(value));
       markers = showPins(generateSimilarProperties(offers));
     }, RERENDER_DELAY,
   ));
 
-  onPriceFilterClick(throttle(
+  onPriceFilterClick(debounce(
     () => {
       markers.forEach((value) => map.removeLayer(value));
       markers = showPins(generateSimilarProperties(offers));
     }, RERENDER_DELAY,
   ));
 
-  onRoomsFilterClick(throttle(
+  onRoomsFilterClick(debounce(
     () => {
       markers.forEach((value) => map.removeLayer(value));
       markers = showPins(generateSimilarProperties(offers));
     }, RERENDER_DELAY,
   ));
 
-  onGuestsFilterClick(throttle(
+  onGuestsFilterClick(debounce(
     () => {
       markers.forEach((value) => map.removeLayer(value));
       markers = showPins(generateSimilarProperties(offers));
     }, RERENDER_DELAY,
   ));
 
-  onHousingMapFeaturesChange(throttle(
+  onHousingMapFeaturesChange(debounce(
     () => {
       markers.forEach((value) => map.removeLayer(value));
       markers = showPins(generateSimilarProperties(offers));
