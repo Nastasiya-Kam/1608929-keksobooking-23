@@ -93,7 +93,7 @@ const showPins = (properties) => {
   return pins;
 };
 
-getData((offers) => {
+const putOffersOnMap = (offers) => {
   let markers = showPins(generateSimilarProperties(offers));
 
   onFilterChange(debounce(
@@ -102,6 +102,8 @@ getData((offers) => {
       markers = showPins(generateSimilarProperties(offers));
     }, RERENDER_DELAY,
   ));
-});
+};
 
-export {setMarkerLatLngDefault, LatLngDefault};
+getData((offers) => putOffersOnMap(offers));
+
+export {setMarkerLatLngDefault, putOffersOnMap};

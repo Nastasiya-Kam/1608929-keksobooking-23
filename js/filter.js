@@ -1,6 +1,6 @@
 const formMapFilters = document.querySelector('.map__filters');
-const mapFilters = document.querySelectorAll('.map__filter');
-const mapFeatures = document.querySelectorAll('.map__checkbox');
+// const mapFilters = document.querySelectorAll('.map__filter');
+// const mapFeatures = document.querySelectorAll('.map__checkbox');
 const housingTypeFilter = document.querySelector('select[name=housing-type]');
 const housingPriceFilter = document.querySelector('select[name=housing-price]');
 const housingRoomsFilter = document.querySelector('select[name=housing-rooms]');
@@ -73,10 +73,10 @@ const filterOffers = (property) => {
   }
 };
 
-const resetFilter = () => {
-  mapFilters.forEach((value) => value.value = 'any');
-  mapFeatures.forEach((value) => value.checked = false);
-};
+// const resetFilter = () => {
+//   mapFilters.forEach((value) => value.value = 'any');
+//   mapFeatures.forEach((value) => value.checked = false);
+// };
 
 const onFilterChange = (cb) => {
   formMapFilters.addEventListener('change', (evt) => {
@@ -86,4 +86,4 @@ const onFilterChange = (cb) => {
   });
 };
 
-export {resetFilter, onFilterChange, filterOffers};
+export {onFilterChange, filterOffers}; //resetFilter,
