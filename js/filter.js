@@ -1,16 +1,15 @@
+const DEFAULT_VALUE = 'any';
+const Price = {
+  LOW: 10000,
+  HIGH: 50000,
+};
+
 const formMapFilters = document.querySelector('.map__filters');
 const housingTypeFilter = document.querySelector('select[name=housing-type]');
 const housingPriceFilter = document.querySelector('select[name=housing-price]');
 const housingRoomsFilter = document.querySelector('select[name=housing-rooms]');
 const housingGuestsFilter = document.querySelector('select[name=housing-guests]');
 const housingMapFeatures = document.querySelectorAll('.map__checkbox');
-
-const Price = {
-  LOW: 10000,
-  HIGH: 50000,
-};
-
-const DEFAULT_VALUE = 'any';
 
 const getCheckedFeatures = (array) => {
   const checkedArray = [];

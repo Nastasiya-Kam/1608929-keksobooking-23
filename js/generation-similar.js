@@ -1,5 +1,7 @@
 import {filterOffers} from './filter.js';
 
+const SIMILAR_DESCRIPTION_COUNT = 10;
+
 const typeHousing = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -8,7 +10,6 @@ const typeHousing = {
   hotel: 'Отель',
 };
 
-const SIMILAR_DESCRIPTION_COUNT = 10;
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const getType = (type) => typeHousing[type];

@@ -16,13 +16,13 @@ const minPrice = {
 
 const formMapFilters = document.querySelector('.map__filters');
 const formAddOffer = document.querySelector('.ad-form');
-const titleInput = formAddOffer.querySelector('input[name="title"]');
-const priceInput = formAddOffer.querySelector('input[name="price"]');
-const roomsSelect = formAddOffer.querySelector('select[name="rooms"]');
-const capacitySelect = formAddOffer.querySelector('select[name="capacity"]');
-const typeSelect = formAddOffer.querySelector('select[name="type"]');
-const timeinSelect = formAddOffer.querySelector('select[name="timein"]');
-const timeoutSelect = formAddOffer.querySelector('select[name="timeout"]');
+const titleInput = formAddOffer.querySelector('input[name=title]');
+const priceInput = formAddOffer.querySelector('input[name=price]');
+const roomsSelect = formAddOffer.querySelector('select[name=rooms]');
+const capacitySelect = formAddOffer.querySelector('select[name=capacity]');
+const typeSelect = formAddOffer.querySelector('select[name=type]');
+const timeinSelect = formAddOffer.querySelector('select[name=timein]');
+const timeoutSelect = formAddOffer.querySelector('select[name=timeout]');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
