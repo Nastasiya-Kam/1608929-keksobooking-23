@@ -8,6 +8,7 @@ const onMessageEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     templateSuccess.remove();
+    resetOfferForm();
   }
 };
 
