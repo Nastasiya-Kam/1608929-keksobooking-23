@@ -27,8 +27,9 @@ chooserAvatar.addEventListener('change', () => {
   }
 });
 
+const imageElement = imgAvatar.cloneNode(true);
+
 chooserImageProperty.addEventListener('change', () => {
-  const imageElement = imgAvatar.cloneNode(true);
   imageElement.width = IMAGE_SIZE;
   imageElement.height = IMAGE_SIZE;
 
