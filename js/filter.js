@@ -11,16 +11,16 @@ const housingRoomsFilter = document.querySelector('select[name=housing-rooms]');
 const housingGuestsFilter = document.querySelector('select[name=housing-guests]');
 const housingMapFeatures = document.querySelectorAll('.map__checkbox');
 
-const getCheckedFeatures = (array) => {
-  const checkedArray = [];
+const getCheckedFeatures = (elements) => {
+  const checkedElements = [];
 
-  array.forEach((element) => {
+  elements.forEach((element) => {
     if (element.checked) {
-      checkedArray.push(element.value);
+      checkedElements.push(element.value);
     }
   });
 
-  return checkedArray;
+  return checkedElements;
 };
 
 const filterOffers = (property) => {
