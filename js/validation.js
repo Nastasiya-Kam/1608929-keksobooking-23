@@ -1,4 +1,4 @@
-import {setMarkerLatLngDefault, putOffersOnMap, closePins} from './map.js';
+import {setLatLngDefault, putOffersOnMap, closePins} from './map.js';
 import {getData} from './api.js';
 
 const MIN_TITLE_LENGTH = 30;
@@ -136,7 +136,7 @@ const resetOfferForm = () => {
     imgProperty.remove();
   }
 
-  setMarkerLatLngDefault();
+  setLatLngDefault();
   getData((offers) => putOffersOnMap(offers));
 };
 

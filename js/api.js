@@ -1,6 +1,5 @@
 import {showAlert} from './utils.js';
 import {openMessageError} from './messages.js';
-import {disablePage} from './form.js';
 
 const getData = (onSuccess) => {
   fetch('https://23.javascript.pages.academy/keksobooking/data')
@@ -13,10 +12,7 @@ const getData = (onSuccess) => {
     })
     .then((response) => response.json())
     .then((offersData) => onSuccess(offersData))
-    .catch(() => {
-      showAlert('Не удалось пoлучить данные с сервера');
-      disablePage();
-    });
+    .catch(() => showAlert('Не удалось пoлучить данные с сервера'));
 };
 
 const sendData = (onSuccess, onFail, body) => {

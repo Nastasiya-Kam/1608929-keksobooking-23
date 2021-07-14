@@ -25,6 +25,8 @@ disablePage();
 const enablePage = () => {
   setDisabled('ad-form', false);
   setDisabled('map__filters', false);
+
+  return true;
 };
 
 const setOfferFormSubmit = (onSuccess) => {

@@ -22,10 +22,12 @@ const PinIconSize = {
   ANCHOR_SIZES: [20, 40],
 };
 
+let isLoaded = false;
+
 const address = document.querySelector('#address');
 
 const map = L.map('map-canvas')
-  .on('load', () => enablePage())
+  .on('load', () => isLoaded = enablePage())
   .setView({
     lat: LatLngDefault.LAT,
     lng: LatLngDefault.LNG,
@@ -54,7 +56,12 @@ const marker = L.marker(
   },
 );
 
-const setMarkerLatLngDefault = () => {
+const setLatLngDefault = () => {
+  map.setView(
+    {
+      lat: LatLngDefault.LAT,
+      lng: LatLngDefault.LNG,
+    });
   marker.setLatLng(
     {
       lat: LatLngDefault.LAT,
@@ -116,6 +123,10 @@ const putOffersOnMap = (offers) => {
   ));
 };
 
-getData((offers) => putOffersOnMap(offers));
+getData((offers) => {
+  if (isLoaded) {
+    putOffersOnMap(offers);
+  }
+});
 
-export {setMarkerLatLngDefault, putOffersOnMap, closePins};
+export {setLatLngDefault, putOffersOnMap, closePins};
