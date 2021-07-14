@@ -5,6 +5,7 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 const NOT_CAPACITY = 100;
+const AVATAR_DEFAULT = 'img/muffin-grey.svg';
 
 const minPrice = {
   bungalow: 0,
@@ -23,6 +24,7 @@ const capacitySelect = formAddOffer.querySelector('select[name=capacity]');
 const typeSelect = formAddOffer.querySelector('select[name=type]');
 const timeinSelect = formAddOffer.querySelector('select[name=timein]');
 const timeoutSelect = formAddOffer.querySelector('select[name=timeout]');
+const imgAvatar = document.querySelector('.ad-form-header__preview img');
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -123,9 +125,15 @@ capacitySelect.addEventListener('input', () => {
 });
 
 const resetOfferForm = () => {
+  const imgProperty = document.querySelector('.ad-form__photo img');
+
   formMapFilters.reset();
   formAddOffer.reset();
-  priceInput.placeholder = '1000';
+  priceInput.placeholder = minPrice.flat;
+  imgAvatar.src = AVATAR_DEFAULT;
+  if (imgProperty) {
+    imgProperty.remove();
+  }
 
   setMarkerLatLngDefault();
   getData((offers) => putOffersOnMap(offers));

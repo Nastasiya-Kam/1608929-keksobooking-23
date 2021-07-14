@@ -27,12 +27,19 @@ chooserAvatar.addEventListener('change', () => {
   }
 });
 
-const imageElement = imgAvatar.cloneNode(true);
+const createImageElement = () => {
+  const element = document.createElement('img');
+
+  element.alt = 'Фотография жилья';
+  element.width = IMAGE_SIZE;
+  element.height = IMAGE_SIZE;
+
+  return element;
+};
+
+const imageElement = createImageElement();
 
 chooserImageProperty.addEventListener('change', () => {
-  imageElement.width = IMAGE_SIZE;
-  imageElement.height = IMAGE_SIZE;
-
   const file = chooserImageProperty.files[0];
   const isMatched = checkFormatFile(file);
 
@@ -46,5 +53,4 @@ chooserImageProperty.addEventListener('change', () => {
 
     reader.readAsDataURL(file);
   }
-
 });
