@@ -1,4 +1,4 @@
-import {setMarkerLatLngDefault, putOffersOnMap} from './map.js';
+import {setMarkerLatLngDefault, putOffersOnMap, closePins} from './map.js';
 import {getData} from './api.js';
 
 const MIN_TITLE_LENGTH = 30;
@@ -127,6 +127,7 @@ capacitySelect.addEventListener('input', () => {
 const resetOfferForm = () => {
   const imgProperty = document.querySelector('.ad-form__photo img');
 
+  closePins();
   formMapFilters.reset();
   formAddOffer.reset();
   priceInput.placeholder = minPrice.flat;

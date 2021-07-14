@@ -103,6 +103,8 @@ const showPins = (properties) => {
   return pins;
 };
 
+const closePins = () => map.closePopup();
+
 const putOffersOnMap = (offers) => {
   let markers = showPins(generateSimilarProperties(offers));
 
@@ -116,4 +118,4 @@ const putOffersOnMap = (offers) => {
 
 getData((offers) => putOffersOnMap(offers));
 
-export {setMarkerLatLngDefault, putOffersOnMap};
+export {setMarkerLatLngDefault, putOffersOnMap, closePins};
