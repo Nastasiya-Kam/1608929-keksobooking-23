@@ -22,9 +22,8 @@ const PinIconSize = {
   ANCHOR_SIZES: [20, 40],
 };
 
-let isLoaded = false;
-
 const address = document.querySelector('#address');
+let isLoaded = false;
 
 const map = L.map('map-canvas')
   .on('load', () => isLoaded = enablePage())

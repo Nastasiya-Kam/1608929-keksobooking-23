@@ -49,7 +49,7 @@ const checkParameter = (template, parameter, text, className) => {
 };
 
 const generateSimilarProperties = (descriptionOffer) => {
-  const array = descriptionOffer
+  const offers = descriptionOffer
     .slice()
     .filter(filterOffers)
     .slice(0, SIMILAR_DESCRIPTION_COUNT)
@@ -70,7 +70,7 @@ const generateSimilarProperties = (descriptionOffer) => {
       return [cardElement, location];
     });
 
-  return array;
+  return offers;
 };
 
 export {generateSimilarProperties};
