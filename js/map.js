@@ -6,6 +6,7 @@ import {debounce} from './utils.js';
 
 const RERENDER_DELAY = 500;
 const LAT_LNG_DIGIT = 5;
+const ZOOM = 12;
 
 const LatLngDefault = {
   LAT: 35.68080,
@@ -30,7 +31,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: LatLngDefault.LAT,
     lng: LatLngDefault.LNG,
-  }, 12);
+  }, ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
