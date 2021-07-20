@@ -3,8 +3,9 @@ import {resetOfferForm} from './validation.js';
 
 const body = document.body;
 const templateSuccess = document.querySelector('#success').content.querySelector('.success');
+const templateError = document.querySelector('#error').content.querySelector('.error');
 
-const onMessageEscKeydown = (evt) => {
+const onSuccessEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     templateSuccess.remove();
@@ -14,12 +15,12 @@ const onMessageEscKeydown = (evt) => {
 
 const openMessageSuccess = () => {
   body.appendChild(templateSuccess);
-  document.addEventListener('keydown', onMessageEscKeydown);
+  document.addEventListener('keydown', onSuccessEscKeydown);
 };
 
 const closeMessageSuccess = () => {
   templateSuccess.remove();
-  document.removeEventListener('keydown', onMessageEscKeydown);
+  document.removeEventListener('keydown', onSuccessEscKeydown);
 };
 
 templateSuccess.addEventListener('click', () => {
@@ -27,16 +28,21 @@ templateSuccess.addEventListener('click', () => {
   resetOfferForm();
 });
 
-const templateError = document.querySelector('#error').content.querySelector('.error');
+const onErrorEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    templateError.remove();
+  }
+};
 
 const openMessageError = () => {
   body.appendChild(templateError);
-  document.addEventListener('keydown', onMessageEscKeydown);
+  document.addEventListener('keydown', onErrorEscKeydown);
 };
 
 const closeMessageError = () => {
   templateError.remove();
-  document.removeEventListener('keydown', onMessageEscKeydown);
+  document.removeEventListener('keydown', onErrorEscKeydown);
 };
 
 templateError.addEventListener('click', () => {

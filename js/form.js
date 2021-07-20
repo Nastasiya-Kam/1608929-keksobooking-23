@@ -15,18 +15,23 @@ const setDisabled = (className, isDisabled) => {
   }
 };
 
-const disablePage = () => {
-  setDisabled('ad-form', true);
+const disableFilter = () => {
   setDisabled('map__filters', true);
 };
 
-disablePage();
+const disableFormFill = () => {
+  setDisabled('ad-form', true);
+};
 
-const enablePage = () => {
-  setDisabled('ad-form', false);
+disableFilter();
+disableFormFill();
+
+const enableFilter = () => {
   setDisabled('map__filters', false);
+};
 
-  return true;
+const enableFormFill = () => {
+  setDisabled('ad-form', false);
 };
 
 const setOfferFormSubmit = (onSuccess) => {
@@ -45,4 +50,4 @@ buttonFormReset.addEventListener('click', () => {
   resetOfferForm();
 });
 
-export {enablePage, disablePage, setOfferFormSubmit};
+export {enableFilter, enableFormFill, disableFilter, disableFormFill, setOfferFormSubmit};

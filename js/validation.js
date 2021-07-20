@@ -131,6 +131,7 @@ const resetOfferForm = () => {
   formMapFilters.reset();
   formAddOffer.reset();
   priceInput.placeholder = minPrice.flat;
+  priceInput.min = minPrice.flat;
   imgAvatar.src = AVATAR_DEFAULT;
   if (imgProperty) {
     imgProperty.remove();

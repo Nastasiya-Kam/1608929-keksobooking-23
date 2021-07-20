@@ -1,5 +1,5 @@
 import {generateSimilarProperties} from './generation-similar.js';
-import {enablePage} from './form.js';
+import {enableFilter, enableFormFill} from './form.js';
 import {getData} from './api.js';
 import {onFilterChange} from './filter.js';
 import {debounce} from './utils.js';
@@ -24,10 +24,9 @@ const PinIconSize = {
 };
 
 const address = document.querySelector('#address');
-let isLoaded = false;
 
 const map = L.map('map-canvas')
-  .on('load', () => isLoaded = enablePage())
+  .on('load', () => enableFormFill())
   .setView({
     lat: LatLngDefault.LAT,
     lng: LatLngDefault.LNG,
@@ -80,6 +79,8 @@ marker.on('moveend', (evt) => {
   address.value = addressValue;
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const showPins = (properties) => {
   const pins = properties.map(([value, location]) => {
     const lat = location.lat;
@@ -101,7 +102,7 @@ const showPins = (properties) => {
     );
 
     pin
-      .addTo(map)
+      .addTo(markerGroup)
       .bindPopup(value);
 
     return pin;
@@ -113,20 +114,20 @@ const showPins = (properties) => {
 const closePins = () => map.closePopup();
 
 const putOffersOnMap = (offers) => {
-  let markers = showPins(generateSimilarProperties(offers));
+  markerGroup.clearLayers();
+  showPins(generateSimilarProperties(offers));
 
   onFilterChange(debounce(
     () => {
-      markers.forEach((value) => map.removeLayer(value));
-      markers = showPins(generateSimilarProperties(offers));
+      markerGroup.clearLayers();
+      showPins(generateSimilarProperties(offers));
     }, RERENDER_DELAY,
   ));
 };
 
 getData((offers) => {
-  if (isLoaded) {
-    putOffersOnMap(offers);
-  }
+  enableFilter();
+  putOffersOnMap(offers);
 });
 
 export {setLatLngDefault, putOffersOnMap, closePins};
