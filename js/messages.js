@@ -9,6 +9,7 @@ const onSuccessEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     templateSuccess.remove();
+    document.removeEventListener('keydown', onSuccessEscKeydown);
     resetOfferForm();
   }
 };
@@ -32,6 +33,7 @@ const onErrorEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     templateError.remove();
+    document.removeEventListener('keydown', onErrorEscKeydown);
   }
 };
 
