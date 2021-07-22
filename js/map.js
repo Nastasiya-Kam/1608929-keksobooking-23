@@ -13,14 +13,14 @@ const LatLngDefault = {
   LNG: 139.76710,
 };
 
-const MainPinIconSize = {
-  ICON_SIZES: [52, 52],
-  ANCHOR_SIZES: [26, 52],
+const MainPinSize = {
+  ICONS: [52, 52],
+  ANCHORS: [26, 52],
 };
 
-const PinIconSize = {
-  ICON_SIZES: [40, 40],
-  ANCHOR_SIZES: [20, 40],
+const PinSize = {
+  ICONS: [40, 40],
+  ANCHORS: [20, 40],
 };
 
 const address = document.querySelector('#address');
@@ -41,8 +41,8 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: MainPinIconSize.ICON_SIZES,
-  iconAnchor: MainPinIconSize.ANCHOR_SIZES,
+  iconSize: MainPinSize.ICONS,
+  iconAnchor: MainPinSize.ANCHORS,
 });
 
 const marker = L.marker(
@@ -88,8 +88,8 @@ const showPins = (properties) => {
 
     const pinIcon = L.icon({
       iconUrl: 'img/pin.svg',
-      iconSize: PinIconSize.ICON_SIZES,
-      iconAnchor: PinIconSize.ANCHOR_SIZES,
+      iconSize: PinSize.ICONS,
+      iconAnchor: PinSize.ANCHORS,
     });
 
     const pin = L.marker(
