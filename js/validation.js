@@ -130,8 +130,8 @@ const resetOfferForm = () => {
   closePins();
   formMapFilters.reset();
   formAddOffer.reset();
-  priceInput.placeholder = minPrice.flat;
-  priceInput.min = minPrice.flat;
+  setDisabledOption(capacitySelect, roomsSelect.value);
+  setPrice(typeSelect.value);
   imgAvatar.src = AVATAR_DEFAULT;
   if (imgProperty) {
     imgProperty.remove();
